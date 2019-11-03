@@ -1,0 +1,30 @@
+{
+  "name": "eslint-plugin-pf-rules",
+  "version": "0.0.0",
+  "description": "Custom eslint rules for Property Finder FE",
+  "keywords": [
+    "eslint",
+    "eslintplugin",
+    "eslint-plugin"
+  ],
+  "author": "Pavlo Lompas",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "mocha tests --recursive"
+  },
+  "dependencies": {
+    "@typescript-eslint/experimental-utils": "^2.4.0",
+    "@typescript-eslint/parser": "^2.4.0",
+    "i": "^0.3.6",
+    "requireindex": "~1.1.0",
+    "typescript": "^3.6.4"
+  },
+  "devDependencies": {
+    "eslint": "~3.9.1",
+    "mocha": "^3.1.2"
+  },
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "license": "ISC"
+}

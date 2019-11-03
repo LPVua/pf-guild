@@ -1,0 +1,14 @@
+{
+  "name": "generator-eslint-typescript",
+  "version": "1.0.0",
+  "description": "Generator for eslint typescript",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Pavlo Lompas",
+  "license": "ISC",
+  "dependencies": {
+    "yeoman-generator": "^4.1.0"
+  }
+}
