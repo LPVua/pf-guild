@@ -1,0 +1,45 @@
+/**
+ * @fileoverview <%- ruleDescription %>
+ * @author <%- userName %>
+ */
+'use strict';
+
+//------------------------------------------------------------------------------
+// Requirements
+//------------------------------------------------------------------------------
+const path = require('path');
+const rule = require('../../../lib/rules/<%- ruleName %>');
+const { RuleTester } = require('../RuleTester');
+const rootPath = path.join(process.cwd(), 'tests/fixtures/');
+const ruleTester = new RuleTester({
+  parser: '@typescript-eslint/parser',
+  parserOptions: {
+    tsconfigRootDir: rootPath,
+    project: './tsconfig.json'
+  }
+});
+
+//------------------------------------------------------------------------------
+// Tests
+//------------------------------------------------------------------------------
+
+ruleTester.run(<%- ruleName %>, rule, {
+  valid: [
+    `
+      <%- validCode %>
+    `,
+  ],
+
+  invalid: [
+    {
+      code: `
+        <%- invalidCode %>
+      `,
+      errors: [
+        {
+          messageId: 'messageId'
+        }
+      ]
+    },
+  ]
+});

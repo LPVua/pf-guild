@@ -1,0 +1,39 @@
+/**
+ * @fileoverview <%- ruleDescription %>
+ * @author <%- userName %>
+ */
+('use strict');
+
+//------------------------------------------------------------------------------
+// Rule Definition
+//------------------------------------------------------------------------------
+
+module.exports = {
+  name: '<%- ruleName %>',
+  meta: {
+    docs: {
+      description: '<%- ruleDescription %>'
+    },
+    messages: {
+
+    },
+    fixable: 'code'
+  },
+
+  create: function(context) {
+    return {
+      /**
+       * Test variable declaration
+       */
+      VariableDeclarator(node) {
+
+      },
+      /**
+       * Test identifier (function parameter)
+       */
+      Identifier(node) {
+
+      }
+    };
+  }
+};
