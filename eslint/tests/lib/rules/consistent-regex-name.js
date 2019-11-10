@@ -31,6 +31,7 @@ ruleTester.run('consistent-regex-name', rule, {
     `,
     'const phoneNumberSplitterRegex = /-/;',
     'const numberValidatorRegex = /^[0-9]$/;',
+    'const fieldReplacerRegex = /\{([a-zA-Z]+)\}/;',
     `
       const getPhoneNumberSplitterRegex = () => /-/;
     `,
