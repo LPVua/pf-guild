@@ -1,12 +1,11 @@
 const {
   TSESLint,
   ESLintUtils
-} = require("@typescript-eslint/experimental-utils");
+} = require('@typescript-eslint/experimental-utils');
 const path = require('path');
-const parser = "@typescript-eslint/parser";
+const parser = '@typescript-eslint/parser';
 
 class RuleTester extends TSESLint.RuleTester {
-
   // as of eslint 6 you have to provide an absolute path to the parser
   // but that's not as clean to type, this saves us trying to manually enforce
   // that contributors require.resolve everything
@@ -17,7 +16,7 @@ class RuleTester extends TSESLint.RuleTester {
     });
 
     if (options.parserOptions && options.parserOptions.project) {
-      this.filename = path.join(getFixturesRootDir(), "file.ts");
+      this.filename = path.join(getFixturesRootDir(), 'file.ts');
     }
   }
 
@@ -29,7 +28,7 @@ class RuleTester extends TSESLint.RuleTester {
 
     if (this.filename) {
       tests.valid = tests.valid.map(test => {
-        if (typeof test === "string") {
+        if (typeof test === 'string') {
           return {
             code: test,
             filename: this.filename
@@ -40,7 +39,7 @@ class RuleTester extends TSESLint.RuleTester {
     }
 
     tests.valid.forEach(test => {
-      if (typeof test !== "string") {
+      if (typeof test !== 'string') {
         if (test.parser === parser) {
           throw new Error(errorMessage);
         }

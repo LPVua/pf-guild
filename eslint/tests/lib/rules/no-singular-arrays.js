@@ -2,36 +2,36 @@
  * @fileoverview Dissallow singular form of words in array names
  * @author Pavlo Lompas
  */
-"use strict";
+'use strict';
 
 //------------------------------------------------------------------------------
 // Requirements
 //------------------------------------------------------------------------------
-const path = require("path");
-const rule = require("../../../lib/rules/no-singular-arrays");
-const { RuleTester } = require("../RuleTester");
+const path = require('path');
+const rule = require('../../../lib/rules/no-singular-arrays');
+const { RuleTester } = require('../RuleTester');
 const rootPath = path.join(process.cwd(), 'tests/fixtures/');
 const ruleTester = new RuleTester({
-  parser: "@typescript-eslint/parser",
+  parser: '@typescript-eslint/parser',
   parserOptions: {
     tsconfigRootDir: rootPath,
-    project: './tsconfig.json',
-  },
+    project: './tsconfig.json'
+  }
 });
 
 //------------------------------------------------------------------------------
 // Tests
 //------------------------------------------------------------------------------
 
-ruleTester.run("no-singular-arrays", rule, {
+ruleTester.run('no-singular-arrays', rule, {
   valid: [
-    "const apples: string[] = []",
+    'const apples: string[] = []',
     "const apple = 'yellow'",
-    "const myApples = []",
-    "const men = []",
-    "const children = []",
-    "const people = []",
-    "const women = []",
+    'const myApples = []',
+    'const men = []',
+    'const children = []',
+    'const people = []',
+    'const women = []',
     `
       const cards = [1, 2, 3];
       const evenCards = cards.filter((card, index) => index % 2 == 0);
@@ -56,7 +56,7 @@ ruleTester.run("no-singular-arrays", rule, {
       `,
       errors: [
         {
-          messageId: "noSingularArrays"
+          messageId: 'noSingularArrays'
         }
       ]
     },
@@ -80,50 +80,50 @@ ruleTester.run("no-singular-arrays", rule, {
       `,
       errors: [
         {
-          messageId: "noSingularArrays"
+          messageId: 'noSingularArrays'
         }
       ]
     },
     {
       errors: [
         {
-          messageId: "noSingularArrays"
+          messageId: 'noSingularArrays'
         }
       ],
       code: `
         const text = 'some string';
         const word = text.split(' ');
-      `,
+      `
     },
     {
-      code: "const man = [];",
+      code: 'const man = [];',
       errors: [
         {
-          messageId: "noSingularArrays"
+          messageId: 'noSingularArrays'
         }
       ]
     },
     {
-      code: "const woman = [];",
+      code: 'const woman = [];',
       errors: [
         {
-          messageId: "noSingularArrays"
+          messageId: 'noSingularArrays'
         }
       ]
     },
     {
-      code: "const apple = [];",
+      code: 'const apple = [];',
       errors: [
         {
-          messageId: "noSingularArrays"
+          messageId: 'noSingularArrays'
         }
       ]
     },
     {
-      code: "const myApple = [];",
+      code: 'const myApple = [];',
       errors: [
         {
-          messageId: "noSingularArrays"
+          messageId: 'noSingularArrays'
         }
       ]
     }
