@@ -60,10 +60,14 @@ ruleTester.run('no-singular-arrays', rule, {
         }
       ]
     },
-    // TODO: get return type of arrow function definition
     {
       code: `
         const getEvenCard = (cards: number[], ID) => {
+          return cards.filter((card, index) => index % 2 == 0)
+        }
+      `,
+      output: `
+        const getEvenCards = (cards: number[], ID) => {
           return cards.filter((card, index) => index % 2 == 0)
         }
       `,
@@ -76,6 +80,11 @@ ruleTester.run('no-singular-arrays', rule, {
     {
       code: `
         function getEvenCard(cards: number[], ID) {
+          return cards.filter((card, index) => index % 2 == 0)
+        }
+      `,
+      output: `
+        function getEvenCards(cards: number[], ID) {
           return cards.filter((card, index) => index % 2 == 0)
         }
       `,
@@ -94,6 +103,14 @@ ruleTester.run('no-singular-arrays', rule, {
           return cards;
         }
       `,
+      output: `
+        function getEvenCards(cards: number[], ID) {
+          
+          const cards = cards.filter((card, index) => index % 2 == 0);
+
+          return cards;
+        }
+      `,
       errors: [
         {
           messageId: 'noSingularArrays'
@@ -104,7 +121,15 @@ ruleTester.run('no-singular-arrays', rule, {
       code: `
         function getEvenCards(cards: number[], ID) {
           
-          const card = cards.filter((card, index) => index % 2 == 0);
+          const evenCard = cards.filter((card, index) => index % 2 == 0);
+
+          return card;
+        }
+      `,
+      output: `
+        function getEvenCards(cards: number[], ID) {
+          
+          const evenCards = cards.filter((card, index) => index % 2 == 0);
 
           return card;
         }
@@ -119,6 +144,10 @@ ruleTester.run('no-singular-arrays', rule, {
       code: `
         const cards = [1, 2, 3];
         const evenCard = cards.filter((card, index) => index % 2 == 0);
+      `,
+      output: `
+        const cards = [1, 2, 3];
+        const evenCards = cards.filter((card, index) => index % 2 == 0);
       `,
       errors: [
         {
@@ -135,10 +164,15 @@ ruleTester.run('no-singular-arrays', rule, {
       code: `
         const text = 'some string';
         const word = text.split(' ');
+      `,
+      output: `
+        const text = 'some string';
+        const words = text.split(' ');
       `
     },
     {
       code: 'const man = [];',
+      output: 'const men = [];',
       errors: [
         {
           messageId: 'noSingularArrays'
@@ -147,6 +181,7 @@ ruleTester.run('no-singular-arrays', rule, {
     },
     {
       code: 'const woman = [];',
+      output: 'const women = [];',
       errors: [
         {
           messageId: 'noSingularArrays'
@@ -155,6 +190,7 @@ ruleTester.run('no-singular-arrays', rule, {
     },
     {
       code: 'const apple = [];',
+      output: 'const apples = [];',
       errors: [
         {
           messageId: 'noSingularArrays'
@@ -163,6 +199,7 @@ ruleTester.run('no-singular-arrays', rule, {
     },
     {
       code: 'const myApple = [];',
+      output: 'const myApples = [];',
       errors: [
         {
           messageId: 'noSingularArrays'

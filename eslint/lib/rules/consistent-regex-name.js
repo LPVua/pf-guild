@@ -15,6 +15,20 @@ const testConsistentName = (node, context) => {
   const nameArray = toNoCase(node.id.name).split(' ');
 
   if (nameArray.length < 2) {
+    if (regexTypes.indexOf(nameArray[0]) !== -1) {
+      context.report({
+        node,
+        message: 'consistentRegexNameMessage',
+        data: {
+          name: node.id.name
+        },
+        fix: fixer => {
+          return fixer.replaceText(node.id, node.id.name + 'Regex');
+        }
+      });
+
+      return;
+    }
     context.report({
       node,
       message: 'consistentRegexNameMessage',
@@ -32,6 +46,9 @@ const testConsistentName = (node, context) => {
       message: 'consistentRegexNameMessage',
       data: {
         name: node.id.name
+      },
+      fix: fixer => {
+        return fixer.replaceText(node.id, node.id.name + 'Regex');
       }
     });
 
@@ -41,12 +58,9 @@ const testConsistentName = (node, context) => {
   if (regexTypes.indexOf(nameArray[nameArray.length - 2]) === -1) {
     context.report({
       node,
-      message: 'consistentRegexNameMessage',
+      message: 'consistentRegexNameMessage2',
       data: {
         name: node.id.name
-      },
-      fix: (fixer) => {
-        fixer.replaceText(node, )
       }
     });
   }
@@ -82,7 +96,7 @@ const isRegex = (node, context) => {
   const signature = checker.getSignatureFromDeclaration(tsNode);
 
   if (signature) {
-  const returnType = checker.getReturnTypeOfSignature(signature);
+    const returnType = checker.getReturnTypeOfSignature(signature);
     return returnType.symbol && returnType.symbol.name === 'RegExp';
   }
 
@@ -97,7 +111,9 @@ module.exports = {
     },
     messages: {
       consistentRegexNameMessage:
-        'Regex variable name should include expression type and Regex suffix'
+        'Regex variable name should include expression type and Regex suffix',
+      consistentRegexNameMessage2:
+        'Regex variable name should include expression type'
     },
     fixable: 'code'
   },

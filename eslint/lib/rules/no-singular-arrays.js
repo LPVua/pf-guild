@@ -11,7 +11,7 @@ const inflect = require('i')();
 //------------------------------------------------------------------------------
 
 const fix = (node, plural) => fixer => {
-  fixer.replaceText(node, plural);
+  return fixer.replaceText(node, plural);
 };
 
 const isArray = (node, context) => {
@@ -78,7 +78,6 @@ module.exports = {
 
   create: function(context) {
     return {
-      // TODO: get return type of arrow function definition
       /**
        * Test variable declaration
        */
@@ -125,8 +124,7 @@ module.exports = {
           data: {
             name: node.name,
             pluralName
-          },
-          fix: fix(node, inflect.pluralize(node.name))
+          }
         });
       },
       /**

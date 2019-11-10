@@ -31,7 +31,7 @@ ruleTester.run('consistent-regex-name', rule, {
     `,
     'const phoneNumberSplitterRegex = /-/;',
     'const numberValidatorRegex = /^[0-9]$/;',
-    'const fieldReplacerRegex = /\{([a-zA-Z]+)\}/;',
+    'const fieldReplacerRegex = /{([a-zA-Z]+)}/;',
     `
       const getPhoneNumberSplitterRegex = () => /-/;
     `,
@@ -58,7 +58,10 @@ ruleTester.run('consistent-regex-name', rule, {
     },
     {
       code: `
-        const addressMatcher= /^[^,\\]+[,\\\s]+(.+?)\s*(\d{5})?$/;
+        const addressMatcher = /^[^,\\]+[,\\\s]+(.+?)\s*(\d{5})?$/;
+      `,
+      output: `
+        const addressMatcherRegex = /^[^,\\]+[,\\\s]+(.+?)\s*(\d{5})?$/;
       `,
       errors: [
         {
@@ -72,13 +75,16 @@ ruleTester.run('consistent-regex-name', rule, {
       `,
       errors: [
         {
-          messageId: 'consistentRegexNameMessage'
+          messageId: 'consistentRegexNameMessage2'
         }
       ]
     },
     {
       code: `
         const getPhoneNumberSplitter = () => /-/;
+      `,
+      output: `
+        const getPhoneNumberSplitterRegex = () => /-/;
       `,
       errors: [
         {
@@ -89,6 +95,9 @@ ruleTester.run('consistent-regex-name', rule, {
     {
       code: `
         const getPhoneNumber = () => /-/;
+      `,
+      output: `
+        const getPhoneNumberRegex = () => /-/;
       `,
       errors: [
         {
@@ -105,10 +114,10 @@ ruleTester.run('consistent-regex-name', rule, {
           return splitterRegex;
         };
       `,
-      
+
       errors: [
         {
-          messageId: 'consistentRegexNameMessage'
+          messageId: 'consistentRegexNameMessage2'
         }
       ]
     },
@@ -118,10 +127,18 @@ ruleTester.run('consistent-regex-name', rule, {
 
           const splitter = /-/;
 
-          return splitterRegex;
+          return splitter;
         };
       `,
-      
+      // TODO: rename references as well
+      output: `
+        function getPhoneNumberSplitterRegex(): RegEx {
+
+          const splitterRegex = /-/;
+
+          return splitter;
+        };
+      `,
       errors: [
         {
           messageId: 'consistentRegexNameMessage'
