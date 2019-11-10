@@ -14,6 +14,55 @@ const fix = (node, plural) => fixer => {
   fixer.replaceText(node, plural);
 };
 
+const isArray = (node, context) => {
+  let isArray = node.init && node.init.type === 'ArrayExpression';
+
+  if (!context.parserServices.esTreeNodeToTSNodeMap) {
+    return isArray;
+  }
+
+  const tsNode = context.parserServices.esTreeNodeToTSNodeMap.get(node);
+  const checker = context.parserServices.program.getTypeChecker();
+  const type = checker.getTypeAtLocation(tsNode);
+
+  if (type && type.symbol) {
+    isArray = type.symbol.name === 'Array';
+  }
+
+  if (isArray) {
+    return isArray;
+  }
+
+  const testNode = node.type === 'FunctionDeclaration' ? node : node.init;
+
+  if (
+    ['ArrowFunctionExpression', 'FunctionDeclaration'].indexOf(
+      testNode.type
+    ) === -1
+  ) {
+    return isArray;
+  }
+
+  const initTsNode = context.parserServices.esTreeNodeToTSNodeMap.get(testNode);
+
+  if (
+    initTsNode.type &&
+    initTsNode.type.typeName &&
+    initTsNode.type.typeName.text
+  ) {
+    return initTsNode.type.typeName.text === 'RegEx';
+  }
+
+  const signature = checker.getSignatureFromDeclaration(initTsNode);
+
+  if (signature) {
+    const returnType = checker.getReturnTypeOfSignature(signature);
+    isArray = returnType.symbol && returnType.symbol.name === 'Array';
+  }
+
+  return isArray;
+};
+
 module.exports = {
   name: 'no-singular-arrays',
   meta: {
@@ -34,13 +83,7 @@ module.exports = {
        * Test variable declaration
        */
       VariableDeclarator(node) {
-        const tsNode = context.parserServices.esTreeNodeToTSNodeMap.get(node);
-        const checker = context.parserServices.program.getTypeChecker();
-        const type = checker.getTypeAtLocation(tsNode);
-        let isNotArray = node.init.type !== 'ArrayExpression';
-        if (type && type.symbol) {
-          isNotArray = type.symbol.name !== 'Array';
-        }
+        let isNotArray = !isArray(node, context);
 
         const isPlural = inflect.pluralize(node.id.name) === node.id.name;
 
@@ -84,6 +127,27 @@ module.exports = {
             pluralName
           },
           fix: fix(node, inflect.pluralize(node.name))
+        });
+      },
+      /**
+       * Test identifier (function parameter)
+       */
+      FunctionDeclaration(node) {
+        let isNotArray = !isArray(node, context);
+
+        const isPlural = inflect.pluralize(node.id.name) === node.id.name;
+
+        if (isNotArray || isPlural) {
+          return;
+        }
+
+        context.report({
+          node,
+          message: 'noSingularArrays',
+          data: {
+            name: node.id.name
+          },
+          fix: fix(node.id, inflect.pluralize(node.id.name))
         });
       }
     };

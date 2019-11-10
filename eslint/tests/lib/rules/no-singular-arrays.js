@@ -61,18 +61,60 @@ ruleTester.run('no-singular-arrays', rule, {
       ]
     },
     // TODO: get return type of arrow function definition
-    // {
-    //   code: `
-    //     const getEvenCard = (cards: number[], ID) => {
-    //       return cards.filter((card, index) => index % 2 == 0)
-    //     }
-    //   `,
-    //   errors: [
-    //     {
-    //       messageId: "noSingularArrays"
-    //     }
-    //   ]
-    // },
+    {
+      code: `
+        const getEvenCard = (cards: number[], ID) => {
+          return cards.filter((card, index) => index % 2 == 0)
+        }
+      `,
+      errors: [
+        {
+          messageId: 'noSingularArrays'
+        }
+      ]
+    },
+    {
+      code: `
+        function getEvenCard(cards: number[], ID) {
+          return cards.filter((card, index) => index % 2 == 0)
+        }
+      `,
+      errors: [
+        {
+          messageId: 'noSingularArrays'
+        }
+      ]
+    },
+    {
+      code: `
+        function getEvenCard(cards: number[], ID) {
+          
+          const cards = cards.filter((card, index) => index % 2 == 0);
+
+          return cards;
+        }
+      `,
+      errors: [
+        {
+          messageId: 'noSingularArrays'
+        }
+      ]
+    },
+    {
+      code: `
+        function getEvenCards(cards: number[], ID) {
+          
+          const card = cards.filter((card, index) => index % 2 == 0);
+
+          return card;
+        }
+      `,
+      errors: [
+        {
+          messageId: 'noSingularArrays'
+        }
+      ]
+    },
     {
       code: `
         const cards = [1, 2, 3];
